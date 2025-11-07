@@ -27,7 +27,7 @@ A high-performance, profit-sharing mining client for the Midnight Network Scaven
 
 ### Windows
 
-1. Download the latest `scavenger-miner-windows.exe` from the [Releases](https://github.com/yourusername/Scavenger-Miner/releases) page
+1. Download the latest `scavenger-miner-windows.exe` from the [Releases](https://github.com/danny-nguyen-2702/Scavenger-Miner/releases) page
 2. Create a `wallets.txt` file **in the same directory**
 3. Add your Cardano wallet addresses (one per line)
 4. Double-click the executable or run from Command Prompt
