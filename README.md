@@ -28,9 +28,7 @@ Scavenger Miner is a standalone executable that allows you to participate in the
 
 Get the latest release for your platform:
 
-- **Windows:** [scavenger-miner-windows-v1.0.0.zip](https://github.com/yourusername/scavenger-miner/releases/latest)
-- **macOS:** [scavenger-miner-macos-v1.0.0.zip](https://github.com/yourusername/scavenger-miner/releases/latest)
-- **Linux:** [scavenger-miner-linux-v1.0.0.tar.gz](https://github.com/yourusername/scavenger-miner/releases/latest)
+- **Windows:** [scavenger-miner-windows-v1.0.0.zip](https://github.com/danny-nguyen-2702/scavenger-miner/releases/latest)
 
 ### 2. Extract
 
@@ -333,4 +331,4 @@ See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
 ---
 
-**Ready to start mining? [Download the latest release now!](https://github.com/yourusername/scavenger-miner/releases/latest)**
+**Ready to start mining? [Download the latest release now!](https://github.com/danny-nguyen-2702/scavenger-miner/releases/latest)**
