@@ -1,334 +1,260 @@
-# Scavenger Miner
+# Scavenger-Miner
 
-**High-performance CPU miner for Midnight blockchain's NIGHT token distribution**
+A high-performance, profit-sharing mining client for the Midnight Network Scavenger Mine program. This miner automatically distributes mining efforts between the operator and users based on a configurable ratio.
 
-[![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
-[![Platform: Windows | macOS | Linux](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
-[![Rust](https://img.shields.io/badge/Rust-1.70%2B-orange.svg)](https://www.rust-lang.org)
+## Features
 
-Mine NIGHT tokens during the Scavenger Mine phase - no installation required, just download and run!
+- **Profit Sharing**: Automatically mines solutions for both operator and user wallets based on a ratio (5% for operator)
+- **CPU Usage Control**: Adjust CPU usage from 1-100% to match your system's capabilities
+- **Multi-Wallet Support**: Mine for multiple user wallets simultaneously
+- **Cross-Platform**: Available for Windows, Linux, and macOS
+- **Optimized Performance**: Built with Rust for maximum efficiency using the AshMaize algorithm
 
----
+## System Requirements
 
-## 🎯 What is Scavenger Miner?
+### Minimum Requirements
+- **CPU**: 2 cores or more
+- **RAM**: 2 GB available memory
+- **Storage**: 50 MB free disk space
+- **Internet**: Stable internet connection
 
-Scavenger Miner is a standalone executable that allows you to participate in the Midnight blockchain's Scavenger Mine token distribution phase. It's designed to be:
+### Recommended Requirements
+- **CPU**: 4+ cores
+- **RAM**: 4 GB available memory
+- **Storage**: 100 MB free disk space
 
-- **Simple** - Download and run, no installation needed
-- **Fast** - Multi-threaded mining using 50% of your CPU
-- **Fair** - ASIC-resistant algorithm (AshMaize) optimized for standard CPUs
-- **Safe** - Open source, no admin rights required
-- **Automatic** - Fetches tasks and submits solutions automatically
+## Installation
 
----
+### Windows
 
-## ⚡ Quick Start
+1. Download the latest `scavenger-miner-windows.exe` from the [Releases](https://github.com/yourusername/Scavenger-Miner/releases) page
+2. Create a `wallets.txt` file **in the same directory**
+3. Add your Cardano wallet addresses (one per line)
+4. Double-click the executable or run from Command Prompt
 
-### 1. Download
+### Linux
 
-Get the latest release for your platform:
+1. Download the latest `scavenger-miner-linux` binary
+2. Make it executable:
+   ```bash
+   chmod +x scavenger-miner-linux
+   ```
+3. Create a `wallets.txt` file in the same directory
+4. Add your Cardano wallet addresses (one per line)
+5. Run the miner:
+   ```bash
+   ./scavenger-miner-linux
+   ```
 
-- **Windows:** [scavenger-miner-windows-v1.0.0.zip](https://github.com/danny-nguyen-2702/scavenger-miner/releases/latest)
+### macOS
 
-### 2. Extract
+1. Download the latest `scavenger-miner-macos` binary
+2. Make it executable:
+   ```bash
+   chmod +x scavenger-miner-macos
+   ```
+3. Create a `wallets.txt` file in the same directory
+4. Add your Cardano wallet addresses (one per line)
+5. Run the miner:
+   ```bash
+   ./scavenger-miner-macos
+   ```
 
-Unzip the downloaded file to any folder.
+**Note**: On macOS, you may need to allow the app in System Preferences > Security & Privacy if you see a security warning.
 
-### 3. Run
+## Quick Start
 
-**Windows:** Double-click `scavenger-miner.exe`
+1. **Prepare your wallet file** (`wallets.txt`):
+   ```
+   addr_test1qq4dl3nhr0axurgcrpun9xyp04pd2r2dwu5x7eeam98psv6dhxlde8ucclv2p46hm077ds4vzelf5565fg3ky794uhrq5up0he
+   addr_test1qrv3cp0m9u7y0elmk0r9wa6an5vfm24ydp5rlau99jxwvaxvj8fgfutr2sevrpsnkx2t6xgqmvdlz8jth8a5phq2wrdqklv2tz
+   ```
 
-**macOS:**
+2. **Run the miner** with default settings:
+   ```bash
+   ./scavenger-miner
+   ```
+
+3. **Or specify CPU usage** (1-100%):
+   ```bash
+   ./scavenger-miner 75
+   ```
+
+## Configuration
+
+### Wallet Configuration (`wallets.txt`)
+
+Create a text file named `wallets.txt` in the same directory as the miner executable. Add one Cardano wallet address per line:
+
+```
+addr_test1qq4dl3nhr0axurgcrpun9xyp04pd2r2dwu5x7eeam98psv6dhxlde8ucclv2p46hm077ds4vzelf5565fg3ky794uhrq5up0he
+addr_test1qrv3cp0m9u7y0elmk0r9wa6an5vfm24ydp5rlau99jxwvaxvj8fgfutr2sevrpsnkx2t6xgqmvdlz8jth8a5phq2wrdqklv2tz
+```
+
+**Important**: 
+- All addresses must be registered with the Scavenger Mine program
+- Use Cardano testnet or mainnet addresses depending on the network
+- Empty lines and lines starting with `#` will be ignored
+
+### CPU Usage
+
+Control how much of your CPU the miner uses:
+
 ```bash
-chmod +x scavenger-miner
+# Use 50% of CPU 
 ./scavenger-miner
+
+# Use 100% of CPU (maximum performance)
+./scavenger-miner wallets.txt 100
+
+# Use 25% of CPU (light mining)
+./scavenger-miner wallets.txt 25
 ```
 
-**Linux:**
-```bash
-chmod +x scavenger-miner
-./scavenger-miner
+**Default**: If no value is specified, the miner uses 100% of available CPU cores.
+
+## How It Works
+
+### Profit Sharing Mechanism
+
+The miner operates in cycles, distributing mining effort between:
+
+1. **Operator Wallet**: Solutions submitted to the operator's centralized system
+2. **User Wallets**: Solutions submitted directly to the Scavenger Mine API
+
+**Example**: With a 5% (1:19) ratio:
+- 1 solution mined for the operator wallet
+- 19 solutions mined for user wallets (distributed among all addresses in `wallets.txt`)
+- Cycle repeats indefinitely
+
+
+### Mining Process
+
+1. Miner starts and loads wallet addresses from `wallets.txt`
+2. **For Operator Wallet**:
+   - Fetches mining task from operator API
+   - Finds valid nonce using AshMaize algorithm
+   - Submits solution to operator's server
+3. **For User Wallets**:
+   - Fetches current challenge from Scavenger Mine API
+   - Finds valid nonce for each user wallet
+   - Submits solutions directly to Scavenger Mine API
+4. Repeats from step 2
+
+## Output and Monitoring
+
+The miner provides real-time console output showing:
+
+- Current mining status
+- Profit-sharing ratio
+- Solutions found and submitted
+- CPU usage and performance metrics
+- Error messages (if any)
+
+Example output:
+```
+[INFO] Scavenger Profit Miner v1.0.0
+[INFO] CPU Usage: 75%
+[INFO] Loaded 2 wallet addresses
+[INFO] Profit Sharing Ratio: 1:19
+[INFO] Mining cycle started...
+[SUCCESS] Solution found for operator wallet (Challenge: **D07C10)
+[SUCCESS] Solution found for user wallet (addr_test1qq4dl...)
+[INFO] Submitting solutions...
+[SUCCESS] All solutions submitted successfully
 ```
 
-That's it! Mining starts automatically.
-
----
-
-## 📋 System Requirements
-
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| **CPU** | 2 cores | 4+ cores |
-| **RAM** | 4 GB | 8 GB |
-| **Disk** | 2 GB free | 5 GB free |
-| **Internet** | Stable connection | Wired/fast WiFi |
-
-**Supported Platforms:**
-- Windows 10/11 (x64)
-- macOS 10.15+ (Intel & Apple Silicon)
-- Linux (Ubuntu 20.04+, Debian 11+, Fedora 35+, etc.)
-
----
-
-## 📊 Features
-
-### ✅ Zero Installation
-- Download, extract, and run
-- No dependencies to install
-- No admin/root privileges required
-- Works immediately out of the box
-
-### ⚡ High Performance
-- Multi-threaded mining (uses 50% of CPU cores by default)
-- ROM caching for improved efficiency
-- Optimized for x86_64 and ARM64 architectures
-- Expected hash rates:
-  - Entry laptops: 10-30 H/s
-  - Modern laptops: 30-80 H/s
-  - Desktop PCs: 50-150 H/s
-  - Workstations: 150-300+ H/s
-
-### 🤖 Fully Automatic
-- Automatic task fetching from Scavenger Mine API
-- Automatic solution submission
-- ROM reuse when possible (saves time)
-- Continuous operation with retry logic
-
-### 🔒 Safe & Secure
-- No personal data collection
-- No private keys required (uses public wallet addresses only)
-- Statically linked (no system dependencies)
-
-### 🎛️ Smart Resource Management
-- Uses 50% of CPU cores by default
-- Automatic memory management
-- Cooperative threading for optimal performance
-- Low system impact - use your computer normally while mining
-
----
-
-## 📖 Documentation
-
-**Full documentation available:**
-
-- 📘 **[User Manual](USER_MANUAL.md)**
-  - Installation instructions
-  - Usage guide
-  - Troubleshooting
-  - FAQ
-  - Performance optimization
-
----
-
-## 🚀 Usage
-
-### Basic Usage
-
-Simply run the executable. The miner will:
-1. Connect to Scavenger Mine API
-2. Fetch available mining tasks
-3. Initialize ROM (takes 2-4s first time)
-4. Start mining with multiple threads
-5. Automatically submit solutions when found
-6. Repeat continuously
-
-### Expected Output
-
-```
-╔════════════════════════════════════════════════╗
-║   Scavenger Mine AshMaize Miner v4.1          ║
-║   Cooperative Threading + ROM Reuse            ║
-╚════════════════════════════════════════════════╝
-
-Miner ID: miner-rust-yourcomputer-1730000000
-System: 8 vCPUs, using 4 mining threads (50%)
-
-Fetching new task from API...
-✓ Fetched task: **D07C10 for addr_test1qq4dl3nhr0...
-
-🔄 ROM cache miss - initializing new ROM...
-   ✓ ROM initialized in 45.23s
-
-🚀 Starting 4 mining threads...
-[Progress] Total hashes checked: 10000
-```
-
-### Stopping the Miner
-
-Press `Ctrl+C` in the terminal window or close the window.
-
----
-
-## 🔍 How It Works
-
-Scavenger Miner uses the **AshMaize** proof-of-work algorithm, which is:
-
-- **Memory-hard** - Requires significant RAM (ASIC-resistant)
-- **CPU-optimized** - Designed for general-purpose processors
-- **Fair** - Equal opportunity for standard consumer hardware
-
-**Mining Process:**
-1. **Fetch Challenge** - Get a cryptographic puzzle from the network
-2. **Initialize ROM** - Set up 1GB of random data based on challenge parameters
-3. **Mine Solutions** - Search for nonces that satisfy the difficulty requirement
-4. **Submit Solutions** - Send valid solutions to the network
-5. **Earn Rewards** - Receive NIGHT tokens proportional to work contributed
-
----
-
-## 📈 Performance Optimization
-
-### Tips for Best Results
-
-1. **Run on AC Power** (laptops) - Prevents CPU throttling
-2. **Ensure Good Cooling** - Keep CPU temps below 80°C
-3. **Close Background Apps** - Free up CPU resources
-
-### Monitoring Performance
-
-The miner displays:
-- **Hash rate** - Hashes per second (H/s)
-- **Total hashes** - Total attempts made
-- **Success rate** - Percentage of tasks completed
-- **Session statistics** - Tasks, solutions, uptime
-
----
-
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
-**"No tasks available"**
-- Normal condition when all tasks are being mined
-- Miner automatically retries every 60 seconds
-- No action needed
+**"Failed to read wallets.txt"**
+- Ensure `wallets.txt` exists in the same directory as the miner
+- Check file permissions
+- Verify the file contains valid wallet addresses
 
-**Miner crashes or stops**
-- Check available RAM (need 3GB+ free)
-- Verify stable internet connection
-- Restart the miner
+**"Invalid wallet address"**
+- All wallet addresses must be valid Cardano addresses
+- Addresses must start with `addr1` (mainnet)
+- Remove any extra spaces or characters
 
-**High CPU usage**
-- Expected! Uses 50% of CPU cores by default
-- Close unnecessary programs if system is slow
+**High CPU usage affecting system performance**
+- Reduce CPU usage parameter: `./scavenger-miner wallets.txt 50`
+- Close other resource-intensive applications
+- Ensure adequate cooling for your system
 
-**Windows SmartScreen warning**
-- Click "More info" → "Run anyway"
-- This is normal for new executables
+**"Address not registered"**
+- Register your wallet addresses with Scavenger Mine before mining
+- Visit the Scavenger Mine portal to complete registration
 
-**macOS "unidentified developer"**
-- Right-click → Open → Click "Open" again
-- Or: System Preferences → Security → "Open Anyway"
+### Performance Optimization
 
-For more troubleshooting help, see [USER_MANUAL.md](USER_MANUAL.md).
+- **CPU Usage**: Start with 50-75% and adjust based on your system
+- **Number of Wallets**: Mining with 10-20 wallets provides optimal performance
+- **Internet Connection**: Ensure stable, low-latency connection
+- **System Resources**: Close unnecessary applications while mining
 
----
+## Security and Privacy
 
-## 🔐 Security
+- **Private Keys**: This miner **NEVER** requires or handles private keys
+- **Wallet Addresses**: Only public wallet addresses are used
+- **Network Communication**: All API communication uses HTTPS
+- **Data Collection**: No personal information is collected
 
-### What the Miner Does
+## Important Notes
 
-- ✅ Connects to official Scavenger Mine API
-- ✅ Performs cryptographic hash calculations
-- ✅ Submits solutions to earn rewards
+### Profit Sharing
 
-### What It Does NOT Do
+- The profit-sharing ratio is set by the operator and may change
+- Users receive solutions proportional to the ratio and number of wallets
+- All solutions are verified on-chain through Scavenger Mine receipts
 
-- ❌ Collect personal information
-- ❌ Require private keys or passwords
-- ❌ Install software or services
+### Mining Rewards
 
+- NIGHT token allocations are determined by the Scavenger Mine program
+- Rewards are proportional to the number of valid solutions submitted
+- Solutions submitted to operator wallet are managed by the operator
+- Solutions for user wallets are credited directly to those addresses
 
----
+### Best Practices
 
-## 🙏 Acknowledgments
+1. **Monitor Regularly**: Check console output for errors or issues
+2. **Stable Operation**: Keep your computer running during mining
+3. **Internet Connection**: Maintain stable internet connectivity
+4. **System Cooling**: Ensure adequate cooling, especially at high CPU usage
+5. **Backup Wallets**: Keep a backup of your `wallets.txt` file
 
-- **[AshMaize](https://github.com/input-output-hk/ce-ashmaize)** - The ASIC-resistant hash algorithm
-- **[Midnight Network](https://midnight.network/)** - The blockchain platform
-- **Input Output Global** - For developing the Midnight blockchain
+## Support
 
----
+For issues, questions, or support:
 
-## 📞 Support
+- **Documentation**: See [USER_MANUAL.md](USER_MANUAL.md) for detailed instructions
+- **GitHub Issues**: Report bugs or request features
+- **Community**: Join our Discord/Telegram community
 
-### Getting Help
+## Disclaimer
 
-- 📖 **Documentation:** [USER_MANUAL.md](USER_MANUAL.md)
+This software is provided "as is" without warranty of any kind. Mining cryptocurrency involves computational costs (electricity, hardware wear). Users are responsible for:
 
-### Reporting Issues
+- Ensuring wallet addresses are correctly registered **before** mining
+- Monitoring mining operations
+- Understanding the profit-sharing agreement
+- Complying with local regulations regarding cryptocurrency
 
-When reporting issues, please include:
-- Operating system and version
-- CPU and RAM specifications
-- Full error message (copy exact text)
-- Steps to reproduce the issue
+The operator reserves the right to adjust profit-sharing ratios to maintain sustainable operations.
 
----
+## License
 
-## 📊 Project Status
+[Insert your chosen license here - e.g., MIT, Apache 2.0, GPL-3.0]
 
-- ✅ **Stable** - Ready for production use
-- 🔄 **Actively Maintained** - Regular updates and bug fixes
-- 📱 **Multi-Platform** - Windows, macOS, Linux
+## Acknowledgments
 
----
-
-## 📸 Screenshots
-
-### Windows
-```
-C:\ScavengerMiner> scavenger-miner.exe wallets.txt 50
-╔════════════════════════════════════════╗
-║   Scavenger Mine Miner v4.1            ║
-╚════════════════════════════════════════╝
-Fetching new task...
-✓ Mining started
-```
-
-### macOS/Linux
-```bash
-$ ./scavenger-miner
-╔════════════════════════════════════════╗
-║   Scavenger Mine Miner v4.1            ║
-╚════════════════════════════════════════╝
-System: 8 vCPUs, using 4 mining threads
-Hash rate: 125.34 H/s
-```
+- Built for the [Midnight Network](https://midnight.network/) Scavenger Mine program
+- Uses the AshMaize proof-of-work algorithm
+- Powered by Rust for maximum performance
 
 ---
 
-## 🌟 Star History
-
-If this project helped you, consider giving it a ⭐ on GitHub!
-
----
-
-## 📝 Changelog
-
-### v1.0.0 (2025-11-XX)
-- Initial release
-- Multi-threaded mining support
-- ROM caching optimization
-- Automatic task management
-- Cross-platform support (Windows, macOS, Linux)
-
-See [CHANGELOG.md](CHANGELOG.md) for full version history.
-
----
-
-## 🎯 Key Features Summary
-
-| Feature | Description |
-|---------|-------------|
-| 🚀 **Zero Installation** | Download and run immediately |
-| ⚡ **Multi-Threading** | Uses 50% of CPU cores automatically |
-| 🔄 **Auto-Fetch** | Gets tasks from network automatically |
-| 📤 **Auto-Submit** | Submits solutions automatically |
-| 💾 **ROM Caching** | Reuses memory for efficiency |
-| 🖥️ **Cross-Platform** | Windows, macOS (Intel & ARM), Linux |
-| 📊 **Real-Time Stats** | Live hash rate and progress |
-| 🎛️ **Low Impact** | Uses 50% CPU, computer stays usable |
-
----
-
-**Ready to start mining? [Download the latest release now!](https://github.com/danny-nguyen-2702/scavenger-miner/releases/latest)**
+**Version**: 1.0.0  
+**Last Updated**: November 2025  
+**Scavenger Mine Phase**: Active (Days 1-21)
