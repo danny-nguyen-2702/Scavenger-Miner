@@ -2,6 +2,12 @@
 
 A high-performance, multi-threaded mining tool for Scavenger Mine that mines directly to **YOUR OWN WALLETS**. No wallet creation, no private key exposure - just pure mining power for your registered addresses.
 
+## 📥 Download
+
+**[👉 Download Latest Release](../../releases)**
+
+Get the latest version for Windows, Linux, or macOS from the releases page.
+
 ## 🎯 Why Choose This Miner?
 
 ### ✅ YOUR KEYS, YOUR WALLET - Complete Control
@@ -27,7 +33,15 @@ This miner operates on a transparent profit-sharing model:
 - **User gets: 11 solutions out of every 12 (91.67%)**
 - **Owner gets: 1 solution out of every 12 (8.33%)**
 
-Example: If you find 120 solutions, you get 110 and the owner gets 10.
+### How It Works:
+When you start the miner, it follows this cycle:
+1. 🔧 **First solution** → Mines for the owner's wallet (1 solution)
+2. 👤 **Next 11 solutions** → Mines for YOUR wallets (11 solutions)
+3. 🔄 **Cycle repeats** → Back to owner (1 solution), then your wallets (11 solutions)
+
+**Example**: If the miner finds 120 solutions total:
+- You get: **110 solutions** (91.67%)
+- Owner gets: **10 solutions** (8.33%)
 
 ## 📋 System Requirements
 
