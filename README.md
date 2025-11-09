@@ -1,260 +1,221 @@
-# Scavenger-Miner
+# Scavenger Miner - Profit-Sharing Mining Tool
 
-A high-performance, profit-sharing mining client for the Midnight Network Scavenger Mine program. This miner automatically distributes mining efforts between the operator and users based on a configurable ratio.
+A high-performance, multi-threaded mining tool for Scavenger Mine that mines directly to **YOUR OWN WALLETS**. No wallet creation, no private key exposure - just pure mining power for your registered addresses.
 
-## Features
+## 🎯 Why Choose This Miner?
 
-- **Profit Sharing**: Automatically mines solutions for both operator and user wallets based on a ratio (5% for operator)
-- **CPU Usage Control**: Adjust CPU usage from 1-100% to match your system's capabilities
-- **Multi-Wallet Support**: Mine for multiple user wallets simultaneously
-- **Cross-Platform**: Available for Windows, Linux, and macOS
-- **Optimized Performance**: Built with Rust for maximum efficiency using the AshMaize algorithm
+### ✅ YOUR KEYS, YOUR WALLET - Complete Control
+Unlike other mining tools that create new wallets and control your private keys, this miner:
+- ✅ Mines directly to **your existing wallet addresses**
+- ✅ **Never asks for private keys** - only wallet addresses needed
+- ✅ No risk of key theft or unauthorized access
+- ✅ You maintain complete control of your assets
 
-## System Requirements
+### 🚀 Advanced Features
+- **Auto-Retry System** - Failed submissions are automatically retried after 1 hour (wallet not registered, server overload, rate limiting, etc.)
+- **Multi-Core Mining** - Utilizes multiple CPU threads to maximize solution discovery
+- **Crypto Receipt Storage** - All solutions saved with receipts in `solutions/` folder for dispute resolution
+- **Verifiable Solutions** - Check your submitted solutions on [Scavenger Mine website](https://sm.midnight.gd/wizard/mine)
+- **Smart Challenge Selection** - Auto-solves previous challenges when current ones are completed
+- **Interactive & CLI Modes** - Easy for beginners, powerful for advanced users
+- **One-Click Setup** - No installation required, just download and run
+- **Higher Success Rate** - More solutions than browser mining, no session restarts needed
 
-### Minimum Requirements
-- **CPU**: 2 cores or more
-- **RAM**: 2 GB available memory
-- **Storage**: 50 MB free disk space
-- **Internet**: Stable internet connection
+## 💰 Profit Sharing - 8% Fee (92% to You!)
 
-### Recommended Requirements
-- **CPU**: 4+ cores
-- **RAM**: 4 GB available memory
-- **Storage**: 100 MB free disk space
+This miner operates on a transparent profit-sharing model:
+- **User gets: 11 solutions out of every 12 (91.67%)**
+- **Owner gets: 1 solution out of every 12 (8.33%)**
 
-## Installation
+Example: If you find 120 solutions, you get 110 and the owner gets 10.
 
-### Windows
+## 📋 System Requirements
 
-1. Download the latest `scavenger-miner-windows.exe` from the [Releases](https://github.com/danny-nguyen-2702/Scavenger-Miner/releases) page
-2. Create a `wallets.txt` file **in the same directory**
-3. Add your Cardano wallet addresses (one per line)
-4. Double-click the executable or run from Command Prompt
+- **OS**: Windows 10/11, Linux (Ubuntu 20.04+), or macOS (10.15+)
+- **CPU**: Multi-core processor (recommended: 2+ cores)
+- **RAM**: 3GB minimum, 8GB recommended
+- **Storage**: 2GB free space
+- **Network**: Stable internet connection
 
-### Linux
+## 🚀 Quick Start Guide
 
-1. Download the latest `scavenger-miner-linux` binary
-2. Make it executable:
-   ```bash
-   chmod +x scavenger-miner-linux
-   ```
-3. Create a `wallets.txt` file in the same directory
-4. Add your Cardano wallet addresses (one per line)
-5. Run the miner:
-   ```bash
-   ./scavenger-miner-linux
-   ```
+### Step 1: Register Your Wallet
+⚠️ **IMPORTANT**: Before using this miner, you **MUST** register your wallet addresses for the Scavenger Mine airdrop at:
+👉 **https://sm.midnight.gd/wizard/mine**
 
-### macOS
+This miner only solves and submits solutions - it does NOT register wallets for you. Hence it doesn't need to know your private keys.
 
-1. Download the latest `scavenger-miner-macos` binary
-2. Make it executable:
-   ```bash
-   chmod +x scavenger-miner-macos
-   ```
-3. Create a `wallets.txt` file in the same directory
-4. Add your Cardano wallet addresses (one per line)
-5. Run the miner:
-   ```bash
-   ./scavenger-miner-macos
-   ```
+### Step 2: Download the Miner
 
-**Note**: On macOS, you may need to allow the app in System Preferences > Security & Privacy if you see a security warning.
+Download the appropriate version for your operating system:
 
-## Quick Start
+- **Windows**: `scavenger-miner.exe`
+- **Linux**: `scavenger-miner`
+- **macOS**: `scavenger-miner-universal`
 
-1. **Prepare your wallet file** (`wallets.txt`):
-   ```
-   addr_test1qq4dl3nhr0axurgcrpun9xyp04pd2r2dwu5x7eeam98psv6dhxlde8ucclv2p46hm077ds4vzelf5565fg3ky794uhrq5up0he
-   addr_test1qrv3cp0m9u7y0elmk0r9wa6an5vfm24ydp5rlau99jxwvaxvj8fgfutr2sevrpsnkx2t6xgqmvdlz8jth8a5phq2wrdqklv2tz
-   ```
 
-2. **Run the miner** with default settings:
-   ```bash
-   ./scavenger-miner
-   ```
+### Step 3: Prepare Your Wallets File
 
-3. **Or specify CPU usage** (1-100%):
-   ```bash
-   ./scavenger-miner 75
-   ```
+Create a file named `wallets.txt` in the same folder as the miner executable.
 
-## Configuration
-
-### Wallet Configuration (`wallets.txt`)
-
-Create a text file named `wallets.txt` in the same directory as the miner executable. Add one Cardano wallet address per line:
+Add your registered wallet addresses, **one address per line**:
 
 ```
-addr_test1qq4dl3nhr0axurgcrpun9xyp04pd2r2dwu5x7eeam98psv6dhxlde8ucclv2p46hm077ds4vzelf5565fg3ky794uhrq5up0he
-addr_test1qrv3cp0m9u7y0elmk0r9wa6an5vfm24ydp5rlau99jxwvaxvj8fgfutr2sevrpsnkx2t6xgqmvdlz8jth8a5phq2wrdqklv2tz
+wallet_address_1
+wallet_address_2
+wallet_address_3
 ```
 
-**Important**: 
-- All addresses must be registered with the Scavenger Mine program
-- Use Cardano testnet or mainnet addresses depending on the network
-- Empty lines and lines starting with `#` will be ignored
+For example:
 
-### CPU Usage
+```
+addr1qxf6n6ulf6el4rg5d9429c6265pykgezprnsdg5pkp4chfyl9fufw6c0tc47ycz24hudr0fl4pwx7pyhzzgm20utnw3sctf57r
+addr1qx25lz6le9qsyuqjmnml4jsc8v85p3suhjha4v6x93vfqgmjqgzwp43jngg5yea289p56gu30lv5hfh65x5ej7ymfqkqcruae6
+addr1qydfg5p9vw9ev2v4cx6ak2pmt9xrfav6qj2zz8gg6stdwj48sczdgxveldgl9zqkkq73kchquu7h3wyltnwxynkffx6qd43xst
+```
 
-Control how much of your CPU the miner uses:
+### Step 4: Run the Miner
 
+#### Windows
+Double click on the scavenger-miner.exe file, or run the following command in Command Prompt / PowerShell
 ```bash
-# Use 50% of CPU 
+scavenger-miner.exe
+```
+
+#### Linux/macOS
+```bash
+chmod +x scavenger-miner  # First time only (macOS: scavenger-miner-universal)
 ./scavenger-miner
-
-# Use 100% of CPU (maximum performance)
-./scavenger-miner wallets.txt 100
-
-# Use 25% of CPU (light mining)
-./scavenger-miner wallets.txt 25
 ```
 
-**Default**: If no value is specified, the miner uses 100% of available CPU cores.
 
-## How It Works
+#### Interactive Mode (Recommended for Beginners)
 
-### Profit Sharing Mechanism
+The miner will ask you:
 
-The miner operates in cycles, distributing mining effort between:
+1. **Wallets file location**
+   - If `wallets.txt` is in the same folder: Just press **Enter**
+   - Otherwise: Type the full path to your `wallets.txt` file
 
-1. **Operator Wallet**: Solutions submitted to the operator's centralized system
-2. **User Wallets**: Solutions submitted directly to the Scavenger Mine API
+2. **CPU usage percentage** (10-100%)
+   - Press **Enter** for default: 50%
+   - Or type a number: e.g., `70` for 70% of CPU cores
+   - ⚠️ Start with 50%, increase gradually if needed
 
-**Example**: With a 5% (1:19) ratio:
-- 1 solution mined for the operator wallet
-- 19 solutions mined for user wallets (distributed among all addresses in `wallets.txt`)
-- Cycle repeats indefinitely
+3. **Discount code** (optional - for community members only)
+   - Community members: Enter your code
+   - Global users: Just press **Enter** to skip
 
+#### Command-Line Mode (For Advanced Users who want to run the miner on background or as a systemd service)
 
-### Mining Process
+Syntax: `executable_name location_to_wallets_file CPU_percentage`
 
-1. Miner starts and loads wallet addresses from `wallets.txt`
-2. **For Operator Wallet**:
-   - Fetches mining task from operator API
-   - Finds valid nonce using AshMaize algorithm
-   - Submits solution to operator's server
-3. **For User Wallets**:
-   - Fetches current challenge from Scavenger Mine API
-   - Finds valid nonce for each user wallet
-   - Submits solutions directly to Scavenger Mine API
-4. Repeats from step 2
-
-## Output and Monitoring
-
-The miner provides real-time console output showing:
-
-- Current mining status
-- Profit-sharing ratio
-- Solutions found and submitted
-- CPU usage and performance metrics
-- Error messages (if any)
-
-Example output:
-```
-[INFO] Scavenger Profit Miner v1.0.0
-[INFO] CPU Usage: 75%
-[INFO] Loaded 2 wallet addresses
-[INFO] Profit Sharing Ratio: 1:19
-[INFO] Mining cycle started...
-[SUCCESS] Solution found for operator wallet (Challenge: **D07C10)
-[SUCCESS] Solution found for user wallet (addr_test1qq4dl...)
-[INFO] Submitting solutions...
-[SUCCESS] All solutions submitted successfully
+**Windows:**
+```bash
+scavenger-miner.exe wallets.txt 70
 ```
 
-## Troubleshooting
+**Linux:**
+```bash
+./scavenger-miner wallets.txt 70
+```
 
-### Common Issues
+**macOS:**
+```bash
+./scavenger-miner-universal wallets.txt 70
+```
 
-**"Failed to read wallets.txt"**
-- Ensure `wallets.txt` exists in the same directory as the miner
-- Check file permissions
-- Verify the file contains valid wallet addresses
+Examples:
+- Use default 50% CPU: `./scavenger-miner wallets.txt 50`
+- Use 80% CPU: `./scavenger-miner wallets.txt 80`
+- Custom wallet file path: `./scavenger-miner /path/to/wallets.txt 60`
 
-**"Invalid wallet address"**
-- All wallet addresses must be valid Cardano addresses
-- Addresses must start with `addr1` (mainnet)
-- Remove any extra spaces or characters
+## 📊 Verifying Your Solutions
 
-**High CPU usage affecting system performance**
-- Reduce CPU usage parameter: `./scavenger-miner wallets.txt 50`
-- Close other resource-intensive applications
-- Ensure adequate cooling for your system
+1. Visit https://sm.midnight.gd/wizard/mine
+2. Connect your wallet address
+3. Check "Your submitted solutions:" counter
+4. **DO NOT** start mining session in the browser while using this tool
+5. Refresh the page to see updated solution counts after running this tool for a while
 
-**"Address not registered"**
-- Register your wallet addresses with Scavenger Mine before mining
-- Visit the Scavenger Mine portal to complete registration
+## ⚠️ Important Warnings
 
-### Performance Optimization
+### CPU Usage Guidelines
+- ⚠️ **Start with 50% of your CPU cores** and monitor system performance
+- ⚠️ **Don't exceed 80% CPU usage** unless using a dedicated server
+- ⚠️ High CPU usage may slow down other applications and increase electricity costs
+- ⚠️ Monitor temperatures to prevent overheating
 
-- **CPU Usage**: Start with 50-75% and adjust based on your system
-- **Number of Wallets**: Mining with 10-20 wallets provides optimal performance
-- **Internet Connection**: Ensure stable, low-latency connection
-- **System Resources**: Close unnecessary applications while mining
+### Avoid Solution Conflicts
+- ❌ **DO NOT mine the same wallet** in both browser and this tool simultaneously
+- ❌ One method finding the solution first makes the other's work wasted
+- ✅ Choose one method per wallet address
 
-## Security and Privacy
+### Preserve Your Solutions
+- 📁 **DO NOT delete the `solutions/` folder** after using this tool
+- 📁 This folder contains all your solutions and crypto receipts
+- 📁 You may need these records for dispute resolution with Scavenger Mine
 
-- **Private Keys**: This miner **NEVER** requires or handles private keys
-- **Wallet Addresses**: Only public wallet addresses are used
-- **Network Communication**: All API communication uses HTTPS
-- **Data Collection**: No personal information is collected
+## 📁 Output Files
 
-## Important Notes
+The miner creates two directories:
 
-### Profit Sharing
+- **`solutions/`** - JSON files with all found solutions and crypto receipts
+- **`logs/`** - Mining session logs with timestamps
 
-- The profit-sharing ratio is set by the operator and may change
-- Users receive solutions proportional to the ratio and number of wallets
-- All solutions are verified on-chain through Scavenger Mine receipts
+Keep these folders safe for your records!
 
-### Mining Rewards
+## 🎥 Video Tutorial
 
-- NIGHT token allocations are determined by the Scavenger Mine program
-- Rewards are proportional to the number of valid solutions submitted
-- Solutions submitted to operator wallet are managed by the operator
-- Solutions for user wallets are credited directly to those addresses
+*Video guide will be added here*
 
-### Best Practices
+## 📸 User Testimonials
 
-1. **Monitor Regularly**: Check console output for errors or issues
-2. **Stable Operation**: Keep your computer running during mining
-3. **Internet Connection**: Maintain stable internet connectivity
-4. **System Cooling**: Ensure adequate cooling, especially at high CPU usage
-5. **Backup Wallets**: Keep a backup of your `wallets.txt` file
+*Screenshots and feedback from users will be added here*
 
-## Support
+## ❓ Frequently Asked Questions
 
-For issues, questions, or support:
+**Q: Do I need to provide my private keys?**  
+A: **NO!** This miner only needs your wallet addresses. Never share your private keys with anyone.
 
-- **Documentation**: See [USER_MANUAL.md](USER_MANUAL.md) for detailed instructions
-- **GitHub Issues**: Report bugs or request features
-- **Community**: Join our Discord/Telegram community
+**Q: What happens if a solution submission fails?**  
+A: The miner automatically retries failed submissions after 1 hour. All solutions are saved in the `solutions/` folder.
 
-## Disclaimer
+**Q: Can I use multiple wallets?**  
+A: Yes! You can mine for multiple wallet addresses simultaneously. Just put your wallet addresses in the wallets.txt file, one address per line. 
 
-This software is provided "as is" without warranty of any kind. Mining cryptocurrency involves computational costs (electricity, hardware wear). Users are responsible for:
+**Q: What's the discount code for?**  
+A: The discount code is exclusively for our community members. Global users can skip this by pressing Enter.
 
-- Ensuring wallet addresses are correctly registered **before** mining
-- Monitoring mining operations
-- Understanding the profit-sharing agreement
-- Complying with local regulations regarding cryptocurrency
+**Q: How do I know if my solutions are submitted?**  
+A: Check the `solutions/` folder for crypto receipts, or verify on the Scavenger Mine website by connecting your wallet.
 
-The operator reserves the right to adjust profit-sharing ratios to maintain sustainable operations.
+**Q: Can I run this on a VPS?**  
+A: Yes! Use command-line mode for VPS deployment. See the Advanced section above.
 
-## License
+**Q: Is this better than browser mining?**  
+A: Yes! This miner achieves higher solution rates, uses multiple CPU cores efficiently, and doesn't require session restarts.
 
-[Insert your chosen license here - e.g., MIT, Apache 2.0, GPL-3.0]
+**Q: What if my wallet isn't registered?**  
+A: Solutions will fail initially (with error message "Solution validation failed: Address is not registered") but will be auto-retried every hour, make sure to register your wallet addresses in 24 hours to avoid the expiration of the solution. Always register at https://sm.midnight.gd/wizard/mine first.
 
-## Acknowledgments
+**Q: How much CPU should I use?**  
+A: Start with 50% of your cores. Monitor performance and gradually increase if needed, but stay under 80% for non-dedicated machines.
 
-- Built for the [Midnight Network](https://midnight.network/) Scavenger Mine program
-- Uses the AshMaize proof-of-work algorithm
-- Powered by Rust for maximum performance
+**Q: Can I trust this miner with my wallets?**  
+A: This miner **never asks for private keys** - only addresses. You can verify this is safe because it only needs your public wallet address to submit solutions.
+
+## 📞 Support & Contact
+
+For support, questions, or feedback:
+- **GitHub Issues**: [Open an issue](../../issues)
+
+## 📜 License
+
+This software is provided as-is. Use at your own risk. Always follow Scavenger Mine's terms of service.
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: November 2025  
-**Scavenger Mine Phase**: Active (Days 1-21)
+**Happy Mining! 🚀⛏️**
+
+*Remember: YOUR KEYS, YOUR WALLET - Mine safely and profitably!*
